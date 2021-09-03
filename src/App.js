@@ -1,25 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import Counter from './counter.js'
+import CounterHooks from './counterHooks.js';
+import React , {useState} from 'react';
+export const themeContext = React.createContext()
 
 function App() {
+  const [theme ,setTheme] = useState('red')
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <themeContext.Provider value = {{backgroundColor : theme}}>
+    Counter
+    <Counter initialCount = {0}/>
+    CounterHooks
+    <CounterHooks initialCount = {0}/>
+    <br/>
+    <button onClick={()=>setTheme(prevTheme => {
+      return (prevTheme==='red'?'blue':'red')
+    })}>Toggle Button</button>
+    </themeContext.Provider>
+  )
 }
 
 export default App;

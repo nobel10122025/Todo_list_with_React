@@ -1,8 +1,8 @@
 import React from 'react'
-import Todo from './component/Todo/Todo';
-import './component/Todo/style.css'
+import HomePage from './component/HomePage/HomePage';
+
 export default function App() {
   return <>
-    <Todo />
+    <HomePage />
   </>;
 }

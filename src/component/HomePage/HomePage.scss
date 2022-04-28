@@ -7,7 +7,7 @@
 }
 // $textColor : #053220;
 $textColor : hsl(36, 100%, 20%);
-$backgroundColor : #f8f398;
+$backgroundColor : #f8f3986b;
 $errorColor : #d34c26;
 $messageColor : #144c52;
 
@@ -22,8 +22,8 @@ $messageColor : #144c52;
     font-size: 1rem;
     cursor: pointer;
     transition: all 300ms ease-in;
-    font-weight: 700;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Lobster', cursive;
+    margin: 0.5rem;
     
     &:hover{
         color: $textColor;
@@ -35,6 +35,7 @@ $messageColor : #144c52;
     color: white;
     padding: 1rem;
     border-radius: 5px;
+    margin: 0.5rem;
 }
 
 @mixin underline-style {
@@ -48,7 +49,7 @@ $messageColor : #144c52;
 
 body {
   margin: 0;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Lobster', cursive;
 }
 
 .homePage{
@@ -66,17 +67,9 @@ body {
         text-align: center;
         padding-top: 1rem;
         @media (max-width:525px) {
-            font-size: 1.5rem;
+            font-size: 2.5rem;
         }
     }
-    .underline{
-       @include underline-style;
-        margin: 1rem 0rem;
-        width: 200px;
-        @media (max-width:525px) {
-            width: 100px;
-        }
-      }
 }
 .inputHolder{
     display: flex;
@@ -119,7 +112,7 @@ body {
 }
 .mainWrapper{
     display: flex;
-    // flex-direction: column;
+    flex-direction: column;
     justify-content: space-around;
     align-items: center;
 
@@ -153,8 +146,8 @@ body {
        
 
         .name{
-            text-transform: uppercase;
-            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: 0.1rem
         }
     }
     .errorHolder{
@@ -162,49 +155,7 @@ body {
         background-color: $errorColor;
         
         .errorMessage{
-            font-weight: 500;
-        }
-    }
-}
-.recentPredictions{
-    text-align: center;
-    margin-top: 2rem;
-
-    h2{
-        color: $textColor;
-    }
-    .underline{
-        @include underline-style;
-        width: 100px;
-    }
-    
-    .recentImages{
-        display: grid;
-        grid-template-columns: repeat(5 , 1fr);
-        grid-gap: 1rem;
-
-        @media (max-width:1200px) {
-            grid-template-columns: repeat(4 , 1fr);
-        }
-        @media (max-width:900px) {
-            grid-template-columns: repeat(3 , 1fr);
-        }
-        @media (max-width:725px) {
-            grid-template-columns: repeat(2 , 1fr);
-            grid-gap: 0rem;
-        }
-        @media (max-width:400px) {
-            grid-template-columns:1fr;
-        }
-        
-        .recentPrediction{
-            
-            img{
-                width: 200px;
-                height: 200px;
-                object-fit:scale-down;
-                cursor: pointer;
-            }
+            font-size: 1.5rem;
         }
     }
 }

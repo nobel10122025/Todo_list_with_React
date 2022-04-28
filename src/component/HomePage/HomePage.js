@@ -14,7 +14,6 @@ function HomePage() {
     const [results, setResults] = useState([])
 
     const imageRef = useRef()
-    const textInputRef = useRef()
     const fileInputRef = useRef()
 
     const loadModel = async () => {
@@ -31,18 +30,19 @@ function HomePage() {
     }
 
     const preProcessing = () => {
+        
         let tensor = tf.browser.fromPixels(imageRef.current , 3)
         .resizeNearestNeighbor([224, 224]) 
 		.expandDims()
 		.toFloat()
         .flatten()
         .arraySync()
+        // console.log(tensor)
         
         let tensor_processed = Object.values(tensor)
-        tensor_processed = tensor_processed.map(value => ((value/255)));
-         let final_tensor = tensor_processed.map((value) => ((value - 0.456)/0.255))
-        console.log(final_tensor)
-        return tf.tensor(final_tensor).as4D(1,224,224,3)
+        let tensor_final = tf.tensor(tensor_processed).as4D(1,224,224,3)
+        tensor_processed = tensor_final.div(255).sub([0.485, 0.456, 0.406]).div([0.229, 0.224, 0.225]);
+        return tensor_processed
     }
     
     const uploadImage = (e) => {
@@ -50,30 +50,21 @@ function HomePage() {
         if (files.length > 0) {
             const url = URL.createObjectURL(files[0])
             setImageURL(url)
-            // preProcessing(fileData)
         } else {
             setImageURL(null)
         }
     }
 
     const identify = async () => {
-        textInputRef.current.value = ''
+        fileInputRef.current.value = ''
         const results = await model.predict(preProcessing())
         const value = results.dataSync()
-        // console.log(value)
         let max = Math.max(...value)
-        // console.log(max)
-        const indexOfMax = value.indexOf(max)
+        let indexOfMax = ((value.indexOf(max))+1) 
         max = ((max*100).toFixed(2))
-       console.log(indexOfMax)
-        const pestName = targetList[indexOfMax]
-        console.log(pestName)
-        setResults([pestName])
-    }
-
-    const handleOnChange = (e) => {
-        setImageURL(e.target.value)
-        setResults([])
+        indexOfMax = String(indexOfMax)
+        const coinName = targetList[indexOfMax]
+        setResults([coinName , max])
     }
 
     const triggerUpload = () => {
@@ -92,11 +83,9 @@ function HomePage() {
     return (
         <div className='homePage'>
             <h1 className='header'>Coin Detection</h1>
-            <div className="underline"></div>
             <div className='inputHolder'>
                 <input type='file' accept='image/*' className='uploadInput' onChange={uploadImage} ref={fileInputRef} />
                 <button className='uploadImage' onClick={triggerUpload}>Upload Image</button>
-                <input type="text" placeholder='Paste image URL' ref={textInputRef} onChange={handleOnChange} />
             </div>
             <div className="mainWrapper">
                 <div className="imageHolder">
@@ -104,7 +93,7 @@ function HomePage() {
                 </div>
                 
                 {imageURL && <button className='button' onClick={identify}>Detect coin</button>}
-                {results.length > 0 ?
+                {results.length > 0  && results[1] > 50?
                     (<div className='resultsHolder'>   
                         <span className='name'>It's a {results[0]}</span><br/>
                     </div>) :
